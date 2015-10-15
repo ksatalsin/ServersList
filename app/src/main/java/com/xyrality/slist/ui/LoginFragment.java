@@ -1,5 +1,7 @@
 package com.xyrality.slist.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -92,7 +94,6 @@ public class LoginFragment extends Fragment {
             }
 
 
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(mLoginInput.getError()))
                     mLoginInput.setError(null);
@@ -132,8 +133,29 @@ public class LoginFragment extends Fragment {
         if (cancel) {
             focusView.requestFocus();
         } else {
-           mActivity.onLoginClick(login, password);
+            mActivity.onLoginClick(login, password);
         }
     }
 
+    public void showLoading(final boolean show) {
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
+
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        progressBar.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
+    }
 }

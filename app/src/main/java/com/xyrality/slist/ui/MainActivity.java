@@ -9,12 +9,14 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.xyrality.slist.R;
+import com.xyrality.slist.model.Server;
 import com.xyrality.slist.model.ServerLisRequest;
 import com.xyrality.slist.model.ServerLisResponse;
 import com.xyrality.slist.net.RetrofitErrorHandler;
 import com.xyrality.slist.net.XyralityApi;
 import com.xyrality.slist.ui.listeners.IFragmentAuthListener;
 
+import java.util.List;
 import java.util.UUID;
 
 import retrofit.Callback;
@@ -112,20 +114,23 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
 */
 
 
+        showLoading(true);
         //This should be GET
         mXyralityApi.getAuthForServerList(login, password, deviceType, deviceId, new Callback<ServerLisResponse>() {
             @Override
             public void success(ServerLisResponse serverLisResponse, Response response) {
-
+                showLoading(false);
+                if (serverLisResponse != null && serverLisResponse.getAllAvailableWorlds() != null)
+                    initializeServerListFragment(serverLisResponse);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                showLoading(false);
             }
         });
-
     }
+
 
 
     /**
@@ -195,6 +200,10 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
 
     private void showLoading(boolean b) {
         //mContent.showLoading
+
+        if(mContent instanceof LoginFragment){
+            ((LoginFragment)mContent).showLoading(b);
+        }
     }
 }
 

@@ -9,12 +9,4 @@
         android:id="@+id/rv_servers"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:id="@+id/pb_loader"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_gravity="center"
-        android:visibility="gone" />
 </FrameLayout>
