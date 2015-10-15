@@ -86,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
         //Change my mind about using AsyncTask
        // new UserLoginTask(email,password,deviceType, deviceId).execute();
 
+
+
+
+     /*
+
+       //This is how I see Post
         ServerLisRequest request = new ServerLisRequest();
         request.setDeviceId(deviceId);
         request.setDeviceType(deviceType);
@@ -93,6 +99,21 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
         request.setPassword(password);
 
         mXyralityApi.getAuthForServerList(request, new Callback<ServerLisResponse>() {
+            @Override
+            public void success(ServerLisResponse serverLisResponse, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+*/
+
+
+        //This should be GET
+        mXyralityApi.getAuthForServerList(login, password, deviceType, deviceId, new Callback<ServerLisResponse>() {
             @Override
             public void success(ServerLisResponse serverLisResponse, Response response) {
 
