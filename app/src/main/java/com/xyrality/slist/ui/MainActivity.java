@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
     private Fragment mContent;
     private XyralityApi mXyralityApi;
     private RetrofitErrorHandler mRetrofitError;
+    private static final String ARG_KEY_SERVER_LIST = "server_list";
+    private ServerLisResponse mServerLisResponse = null;
 
 
     @Override
@@ -43,7 +45,37 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
         setContentView(R.layout.activity_main);
 
         initializeRepository();
-        initializeLoginFragment();
+
+        if (savedInstanceState != null) {
+           /* for (String key : savedInstanceState.keySet()) {
+                Log.i(TAG, ((Object) this).getClass().getSimpleName() + " saved states: " + key);
+            }*/
+            mServerLisResponse = (ServerLisResponse)savedInstanceState.getSerializable(ARG_KEY_SERVER_LIST);
+        }
+
+        if(mServerLisResponse!=null){
+            initializeServerListFragment(mServerLisResponse);
+        }else{
+            initializeLoginFragment();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(mServerLisResponse!=null)
+            outState.putSerializable(ARG_KEY_SERVER_LIST, mServerLisResponse);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+         mServerLisResponse = (ServerLisResponse)savedInstanceState.getSerializable(ARG_KEY_SERVER_LIST);
     }
 
     private void initializeRepository() {
@@ -75,44 +107,37 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
     }
 
     private void initializeServerListFragment(ServerLisResponse slr) {
+        mServerLisResponse = slr;
         mContent = ServerListFragment.newInstance(slr);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, mContent).commit();
     }
 
+    /**
+     1)
+       //Change my mind about using AsyncTask
+      // new UserLoginTask(email,password,deviceType, deviceId).execute();
+
+    2)
+      //This is how I see Post
+       ServerLisRequest request = new ServerLisRequest();
+       request.setDeviceId(deviceId);
+       request.setDeviceType(deviceType);
+       request.setLogin(login);
+       request.setPassword(password);
+       mXyralityApi.getAuthForServerList(request, new Callback<ServerLisResponse>() {
+           @Override
+           public void success(ServerLisResponse serverLisResponse, Response response) {
+           }
+           @Override
+           public void failure(RetrofitError error) {
+           }
+       });
+*/
     @Override
     public void onLoginClick(String login, String password) {
         String deviceId = getDeviceId();
         String deviceType = String.format("%s %s",android.os.Build.MODEL, android.os.Build.VERSION.RELEASE);
-
-        //Change my mind about using AsyncTask
-       // new UserLoginTask(email,password,deviceType, deviceId).execute();
-
-
-
-
-     /*
-
-       //This is how I see Post
-        ServerLisRequest request = new ServerLisRequest();
-        request.setDeviceId(deviceId);
-        request.setDeviceType(deviceType);
-        request.setLogin(login);
-        request.setPassword(password);
-
-        mXyralityApi.getAuthForServerList(request, new Callback<ServerLisResponse>() {
-            @Override
-            public void success(ServerLisResponse serverLisResponse, Response response) {
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-*/
-
 
         showLoading(true);
         //This should be GET
@@ -130,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
             }
         });
     }
-
 
 
     /**
