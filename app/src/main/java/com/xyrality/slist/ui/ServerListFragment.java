@@ -2,13 +2,11 @@ package com.xyrality.slist.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.xyrality.slist.R;
 import com.xyrality.slist.model.ServerLisResponse;
@@ -26,7 +24,6 @@ public class ServerListFragment extends Fragment {
     public static ServerListFragment newInstance(ServerLisResponse slr) {
         ServerListFragment f = new ServerListFragment();
         Bundle args = new Bundle();
-
         //should be parcelable :)
         args.putSerializable(ARG_KEY_SERVER_LIST, slr);
         f.setArguments(args);
@@ -35,7 +32,6 @@ public class ServerListFragment extends Fragment {
 
     @Bind(R.id.rv_servers)
     RecyclerView mServersRecycler;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,13 +44,11 @@ public class ServerListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     @Override
@@ -67,13 +61,8 @@ public class ServerListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mServersRecycler.setLayoutManager(linearLayoutManager);
         mServersRecycler.setHasFixedSize(true);
-
         mServerLisResponse = (ServerLisResponse) getArguments().getSerializable(ARG_KEY_SERVER_LIST);
-
         ServerRecyclerAdapter serverRecyclerAdapter = new ServerRecyclerAdapter(mServerLisResponse.getAllAvailableWorlds());
         mServersRecycler.setAdapter(serverRecyclerAdapter);
-
     }
-
-
 }

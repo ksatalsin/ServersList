@@ -7,12 +7,6 @@ import java.io.Serializable;
  */
 public class WorldStatus implements Serializable {
 
-      /*  description = Description string of a status
-        id = Identifier indicating the status*/
-
-    private String description;
-    private String id;
-
     public String getDescription() {
         return description;
     }
@@ -28,4 +22,8 @@ public class WorldStatus implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    private String description;
+    private String id;
+
 }

@@ -2,22 +2,8 @@ package com.xyrality.slist.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ServerLisResponse implements Serializable{
-
-   /* "serverVersion": "1.0.",
-            "allAvailableWorlds"
-
-            googleLoginSwitchOn": true,
-"serverVersion": "4.14.4",
-"facebookLoginSwitchOn": true,
-
-featureHelpshift": true,
-"time": "2015-10-15T18:19:20Z",
-"info": "Unknown user"
-
-*/
+public class ServerLisResponse implements Serializable {
 
     public String getServerVersion() {
         return serverVersion;
@@ -51,11 +37,6 @@ featureHelpshift": true,
         this.facebookLoginSwitchOn = facebookLoginSwitchOn;
     }
 
-    private boolean googleLoginSwitchOn;
-    private boolean facebookLoginSwitchOn;
-    private boolean featureHelpshift;
-    private String serverVersion;
-
     public boolean isFeatureHelpshift() {
         return featureHelpshift;
     }
@@ -83,4 +64,8 @@ featureHelpshift": true,
     private String time;
     private String info;
     private ArrayList<Server> allAvailableWorlds;
+    private boolean googleLoginSwitchOn;
+    private boolean facebookLoginSwitchOn;
+    private boolean featureHelpshift;
+    private String serverVersion;
 }

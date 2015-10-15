@@ -1,25 +1,17 @@
 package com.xyrality.slist.ui.adapters;
 
-/**
- * Created by youyou on 15.10.2015.
- */
-
-
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-
-
-import java.util.ArrayList;
-
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xyrality.slist.R;
 import com.xyrality.slist.model.Server;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +26,7 @@ public class ServerRecyclerAdapter extends RecyclerView.Adapter<ServerRecyclerAd
         @Bind(R.id.tv_desc)
         TextView mDescText;
 
-         @Bind(R.id.tv_name)
+        @Bind(R.id.tv_name)
         TextView mNameText;
 
         public ViewHolder(View v) {
@@ -59,8 +51,7 @@ public class ServerRecyclerAdapter extends RecyclerView.Adapter<ServerRecyclerAd
     }
 
     @Override
-    public ServerRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                               int viewType) {
+    public ServerRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_server, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -71,17 +62,12 @@ public class ServerRecyclerAdapter extends RecyclerView.Adapter<ServerRecyclerAd
         final Server item = mServers.get(position);
         holder.mNameText.setText(item.getName());
         //TODO: localize item
-        holder.mDescText.setText("Country: " + item.getCountry() + "Lang: " + item.getLanguage());
-
-        if(item.getWorldStatus().getDescription().equalsIgnoreCase("online")){
+        holder.mDescText.setText("Country: " + item.getCountry() + ", " + "Lang: " + item.getLanguage());
+        if (item.getWorldStatus().getDescription().equalsIgnoreCase("online")) {
             holder.mStatusIcon.setImageResource(R.drawable.ic_online);
-        }else{
+        } else {
             holder.mStatusIcon.setImageResource(R.drawable.ic_ofline);
         }
-
-        holder.mDescText.setText("Country: " + item.getCountry());
-
-
     }
 
     @Override

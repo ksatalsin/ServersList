@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,7 +23,6 @@ import com.xyrality.slist.ui.listeners.IFragmentAuthListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 
 public class LoginFragment extends Fragment {
 
@@ -74,7 +74,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initializeLoginView();
     }
 
@@ -92,54 +91,50 @@ public class LoginFragment extends Fragment {
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(mLoginInput.getError()))
                     mLoginInput.setError(null);
-
                 if (!TextUtils.isEmpty(mPasswordInput.getError()))
                     mPasswordInput.setError(null);
             }
         };
-
         mLoginInput.addTextChangedListener(textWatcher);
         mPasswordInput.addTextChangedListener(textWatcher);
-
+        //TODO: delete this
         mLoginInput.setText("android.test@xyrality.com");
         mPasswordInput.setText("password");
     }
 
     private void attemptLogin() {
-
         String login = mLoginInput.getText().toString();
         String password = mPasswordInput.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
-
         if (TextUtils.isEmpty(password)) {
             mPasswordInput.setError(getString(R.string.error_field_required));
             focusView = mPasswordInput;
             cancel = true;
         }
-
         if (TextUtils.isEmpty(login)) {
             mLoginInput.setError(getString(R.string.error_field_required));
             focusView = mLoginInput;
             cancel = true;
         }
-
         if (cancel) {
             focusView.requestFocus();
         } else {
+
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
             mActivity.onLoginClick(login, password);
         }
     }
 
     public void showLoading(final boolean show) {
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
         mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
         mLoginView.animate().setDuration(shortAnimTime).alpha(
                 show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
@@ -148,7 +143,6 @@ public class LoginFragment extends Fragment {
                 mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
             }
         });
-
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         progressBar.animate().setDuration(shortAnimTime).alpha(
                 show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
