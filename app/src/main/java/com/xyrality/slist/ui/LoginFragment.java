@@ -91,6 +91,8 @@ public class LoginFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(mLoginInput.getError()))
                     mLoginInput.setError(null);
@@ -103,6 +105,8 @@ public class LoginFragment extends Fragment {
         mLoginInput.addTextChangedListener(textWatcher);
         mPasswordInput.addTextChangedListener(textWatcher);
 
+        mLoginInput.setText("android.test@xyrality.com");
+        mPasswordInput.setText("password");
     }
 
     private void attemptLogin() {

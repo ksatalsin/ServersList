@@ -9,16 +9,20 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.xyrality.slist.R;
+import com.xyrality.slist.model.ServerLisRequest;
 import com.xyrality.slist.model.ServerLisResponse;
+import com.xyrality.slist.net.RetrofitErrorHandler;
 import com.xyrality.slist.net.XyralityApi;
 import com.xyrality.slist.ui.listeners.IFragmentAuthListener;
 
 import java.util.UUID;
 
+import retrofit.Callback;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 public class MainActivity extends AppCompatActivity implements IFragmentAuthListener {
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
     private UserLoginTask mAuthTask = null;
     private Fragment mContent;
     private XyralityApi mXyralityApi;
-    private ErrorHandler mRetrofitError;
+    private RetrofitErrorHandler mRetrofitError;
 
 
     @Override
@@ -42,12 +46,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
 
     private void initializeRepository() {
 
-        mRetrofitError = new ErrorHandler() {
-            @Override
-            public Throwable handleError(RetrofitError cause) {
-                return null;
-            }
-        };
+        mRetrofitError = new RetrofitErrorHandler();
 
         final RestAdapter.Builder restAdapterBuilder = new RestAdapter.Builder()
                 //.setClient(new OkClient(okHttpClient))
@@ -80,15 +79,30 @@ public class MainActivity extends AppCompatActivity implements IFragmentAuthList
     }
 
     @Override
-    public void onLoginClick(String email, String password) {
+    public void onLoginClick(String login, String password) {
         String deviceId = getDeviceId();
         String deviceType = String.format("%s %s",android.os.Build.MODEL, android.os.Build.VERSION.RELEASE);
 
         //Change my mind about using AsyncTask
        // new UserLoginTask(email,password,deviceType, deviceId).execute();
 
-        //TODO: call repository request
+        ServerLisRequest request = new ServerLisRequest();
+        request.setDeviceId(deviceId);
+        request.setDeviceType(deviceType);
+        request.setLogin(login);
+        request.setPassword(password);
 
+        mXyralityApi.getAuthForServerList(request, new Callback<ServerLisResponse>() {
+            @Override
+            public void success(ServerLisResponse serverLisResponse, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
 
     }
 
